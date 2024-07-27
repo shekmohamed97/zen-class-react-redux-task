@@ -31,12 +31,22 @@ const Product = () => {
 
     const [products,setProducts]=useState([]);
 
-    useEffect(()=>{
+    useEffect(() => {
         fetch("/public/mocks/products.json")
-        .then((response)=>response.json())
-        .then((result)=>setProducts(result.products))
-        .catch((e)=>console.log(e));
-    },[]);
+          .then((response) => {
+            if (!response.ok) {
+              throw new Error('Network response was not ok');
+            }
+            const contentType = response.headers.get('Content-Type');
+            if (!contentType.includes('application/json')) {
+              throw new TypeError('Received non-JSON response');
+            }
+            return response.json();
+          })
+          .then((result) => setProducts(result.products))
+          .catch((e) => console.error('Fetch error:', e));
+      }, []);
+      
 
     const cards=products.map((product)=>(
         <div className="card-container" key={product.id}>
