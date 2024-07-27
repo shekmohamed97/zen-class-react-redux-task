@@ -32,7 +32,7 @@ const Product = () => {
     const [products,setProducts]=useState([]);
 
     useEffect(() => {
-        fetch("/public/mocks/products.json")
+        fetch("/mocks/products.json")
           .then((response) => {
             if (!response.ok) {
               throw new Error('Network response was not ok');
